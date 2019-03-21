@@ -1,0 +1,16 @@
+.idea
+*.iml
+*.pyc
+#./static/
+*.log
+log/*
+.vscode
+.scannerwork/*
+*.png
+*.prof
+*.jpg
+*.pdf
+.vagrant
+thrift_gen/
+__pycache__/
+static/
