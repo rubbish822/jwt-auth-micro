@@ -1,18 +1,17 @@
 # coding: utf-8
 import typing
 
-from django.conf import settings
 from itsdangerous import (TimedJSONWebSignatureSerializer, JSONWebSignatureSerializer)
 from itsdangerous.exc import (BadSignature, BadTimeSignature)
 
 from .exceptions import (JwtExpireError, JwtNotRightError, )
-from .utils import (get_redis_cache, get_header_token, remove_jwt_token, )
+from .utils import (get_redis_cache, get_header_token, remove_jwt_token, set_redis_cache)
 from auth_micro import settings as jwt_settings
 
 
 def jwt_token(
         user_data: typing.Any,
-        secret_key: str=settings.JWT_AUTH_SECRET_KEY,
+        secret_key: str=jwt_settings.JWT_AUTH_SECRET_KEY,
 ) -> typing.Any:
     """
      加密用户数据
@@ -26,7 +25,7 @@ def jwt_token(
 
 def jwt_token_expire(
         user_data: typing.Any,
-        secret_key: str=settings.JWT_AUTH_SECRET_KEY,
+        secret_key: str=jwt_settings.JWT_AUTH_SECRET_KEY,
         expire_time: int=None,
 ) -> typing.Any:
     """
@@ -37,7 +36,7 @@ def jwt_token_expire(
     :return:
     """
     expire_time = expire_time or getattr(
-        settings, 'JWT_EXPIRE_TIME', jwt_settings.JWT_EXPIRE_TIME)
+        jwt_settings, 'JWT_EXPIRE_TIME', jwt_settings.JWT_EXPIRE_TIME)
     serializer = TimedJSONWebSignatureSerializer(
         secret_key, expires_in=expire_time)
     return serializer.dumps(user_data)
@@ -45,7 +44,7 @@ def jwt_token_expire(
 
 def decode_jwt_token(
         request: typing.Any,
-        secret_key: str=settings.JWT_AUTH_SECRET_KEY,
+        secret_key: str=jwt_settings.JWT_AUTH_SECRET_KEY,
         cache_name: str='default',
         token_key: str='',
 ) -> typing.Any:
@@ -64,11 +63,30 @@ def decode_jwt_token(
     except (BadSignature, Exception) as e:
         raise JwtNotRightError
     else:
-        user_pk = getattr(settings, 'JWT_USER_PK', jwt_settings.JWT_USER_PK)
+        user_pk = getattr(jwt_settings, 'JWT_USER_PK', jwt_settings.JWT_USER_PK)
         user_id = user_data.get(user_pk, '')
         check_jwt_token(user_id, token_key, cache_name)
     request.user = user_data
     return user_data, None
+
+
+def get_user_data(
+        token_key: str,
+        secret_key: str=jwt_settings.JWT_AUTH_SECRET_KEY,
+) -> typing.Any:
+    """
+    解析用户数据
+    :param token_key:
+    :param secret_key:
+    :return:
+    """
+    serializer = JSONWebSignatureSerializer(secret_key)
+    try:
+        user_data = serializer.loads(token_key)
+    except (BadSignature, Exception) as e:
+        raise JwtNotRightError
+    else:
+        return user_data
 
 
 def check_jwt_token(
@@ -95,7 +113,7 @@ def check_jwt_token(
 
 def decode_jwt_token_expire(
         request: typing.Any,
-        secret_key: str=settings.JWT_AUTH_SECRET_KEY,
+        secret_key: str=jwt_settings.JWT_AUTH_SECRET_KEY,
         cache_name: str='default',
         expire_time: int=None,
         token_key: str='',
@@ -116,7 +134,7 @@ def decode_jwt_token_expire(
     except (BadSignature, BadTimeSignature, Exception):
         raise JwtNotRightError
     else:
-        user_pk = getattr(settings, 'JWT_USER_PK', jwt_settings.JWT_USER_PK)
+        user_pk = getattr(jwt_settings, 'JWT_USER_PK', jwt_settings.JWT_USER_PK)
         user_id = user_data.get(user_pk, '')
         check_jwt_token(user_id, token_key, cache_name)
     request.user = user_data
@@ -134,3 +152,25 @@ def jwt_logout(
     :return:
     """
     remove_jwt_token(key, cache_name)
+
+
+def set_jwt_token_redis(
+        key: str,
+        secret_key: jwt_settings.JWT_AUTH_SECRET_KEY,
+        user_data: typing.Any,
+        expire_time: int=None,
+        cache_name: str='default',
+) -> typing.Any:
+    """
+    生成jwt token并存储到redis中
+    :param key:
+    :param cache_name: cache
+    :param secret_key:
+    :param user_data:
+    :param expire_time:
+    :return:
+    """
+    s = jwt_token(
+        user_data, secret_key
+    )
+    set_redis_cache(key, s.decode(), expire_time, cache_name)
