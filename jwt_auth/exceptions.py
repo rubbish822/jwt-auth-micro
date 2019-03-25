@@ -2,13 +2,23 @@
 
 
 class JwtDecodeError(Exception):
-    pass
+    def __str__(self):
+        return f'Jwt decode failed!'
 
 
 class JwtExpireError(Exception):
-    pass
+    def __str__(self):
+        return f'Jwt token expired!'
 
 
 class JwtNotRightError(Exception):
-    pass
+    def __str__(self):
+        return f'Jwt token not right!'
+
+
+class TokenHeaderError(Exception):
+    def __str__(self):
+        return f'The header not have token!'
+
+
 
