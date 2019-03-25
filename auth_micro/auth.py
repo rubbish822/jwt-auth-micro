@@ -7,7 +7,7 @@ from itsdangerous.exc import (BadSignature, BadTimeSignature)
 
 from .exceptions import (JwtExpireError, JwtNotRightError, )
 from .utils import (get_redis_cache, get_header_token, remove_jwt_token, )
-from . import settings as jwt_settings
+from auth_micro import settings as jwt_settings
 
 
 def jwt_token(

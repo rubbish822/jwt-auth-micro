@@ -2,8 +2,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='jwtauthmicro',
-    version='0.1.6',
+    name='microjwtauth',
+    version='0.1.1',
     description='Django microservice JWT authentication',
     classifiers=[
         'License :: OSI Approved :: MIT License',
@@ -15,7 +15,7 @@ setup(
     url='https://github.com/goupper/jwt-auth-micro',
     author_email='chongwuwy@163.com',
     license='MIT',
-    packages=find_packages('jwt_auth'),
+    packages=find_packages(),
     include_package_data=False,
     zip_safe=True,
 )
