@@ -65,7 +65,7 @@ def decode_jwt_token(
     else:
         user_pk = getattr(jwt_settings, 'JWT_USER_PK', jwt_settings.JWT_USER_PK)
         user_id = user_data.get(user_pk, '')
-        check_jwt_token(user_id, token_key, cache_name)
+        check_jwt_token(jwt_settings.JWT_REDIS_KEY.format(user_id=user_id), token_key, cache_name)
     request.user = user_data
     return user_data, None
 
@@ -136,7 +136,7 @@ def decode_jwt_token_expire(
     else:
         user_pk = getattr(jwt_settings, 'JWT_USER_PK', jwt_settings.JWT_USER_PK)
         user_id = user_data.get(user_pk, '')
-        check_jwt_token(user_id, token_key, cache_name)
+        check_jwt_token(jwt_settings.JWT_REDIS_KEY.format(user_id=user_id), token_key, cache_name)
     request.user = user_data
     return user_data, None
 
