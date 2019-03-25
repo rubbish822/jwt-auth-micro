@@ -156,8 +156,8 @@ def jwt_logout(
 
 def set_jwt_token_redis(
         key: str,
-        secret_key: jwt_settings.JWT_AUTH_SECRET_KEY,
         user_data: typing.Any,
+        secret_key: str=jwt_settings.JWT_AUTH_SECRET_KEY,
         expire_time: int=None,
         cache_name: str='default',
 ) -> typing.Any:
@@ -174,3 +174,5 @@ def set_jwt_token_redis(
         user_data, secret_key
     )
     set_redis_cache(key, s.decode(), expire_time, cache_name)
+    return s.decode()
+

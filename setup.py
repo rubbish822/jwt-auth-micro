@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='microjwtauth',
-    version='0.1.2',
+    version='0.1.5',
     description='Django microservice JWT authentication',
     classifiers=[
         'License :: OSI Approved :: MIT License',
