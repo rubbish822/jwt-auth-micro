@@ -1,0 +1,14 @@
+Metadata-Version: 1.1
+Name: jwtauthmicro
+Version: 0.1.6
+Summary: Django microservice JWT authentication
+Home-page: https://github.com/goupper/jwt-auth-micro
+Author: ivan
+Author-email: chongwuwy@163.com
+License: MIT
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent

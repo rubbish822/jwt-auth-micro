@@ -1,0 +1,7 @@
+README.md
+setup.py
+jwtauthmicro.egg-info/PKG-INFO
+jwtauthmicro.egg-info/SOURCES.txt
+jwtauthmicro.egg-info/dependency_links.txt
+jwtauthmicro.egg-info/top_level.txt
+jwtauthmicro.egg-info/zip-safe

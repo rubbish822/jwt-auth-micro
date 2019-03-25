@@ -2,8 +2,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='jwt-auth-micro',
-    version='0.1.2',
+    name='jwtauthmicro',
+    version='0.1.6',
     description='Django microservice JWT authentication',
     classifiers=[
         'License :: OSI Approved :: MIT License',

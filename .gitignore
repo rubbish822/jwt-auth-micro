@@ -14,4 +14,3 @@ log/*
 thrift_gen/
 __pycache__/
 static/
-dist/
