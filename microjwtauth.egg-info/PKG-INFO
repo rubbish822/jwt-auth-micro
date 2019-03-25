@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: microjwtauth
-Version: 0.1.1
+Version: 0.1.2
 Summary: Django microservice JWT authentication
 Home-page: https://github.com/goupper/jwt-auth-micro
 Author: ivan
